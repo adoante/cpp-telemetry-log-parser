@@ -3,4 +3,5 @@
 - parser for UAV flight logs
 - detect anomalies
 - generate reports
-- use OOp + file handling + STL
+- use OOP + file handling + STL
+- python web server
