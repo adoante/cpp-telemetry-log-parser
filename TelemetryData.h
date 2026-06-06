@@ -3,6 +3,7 @@
 #ifndef TELEMETRY_DATA_H
 #define TELEMETRY_DATA_H
 
+#include <filesystem>
 #include <string>
 
 class TelemetryData {
