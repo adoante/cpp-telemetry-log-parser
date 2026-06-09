@@ -14,13 +14,16 @@ Parser for UAV telemetry data.
 Parses rows into structured objects.
 
 ### Validator
-Uses parsed structured objects and validates telemetry ranges.
+Uses parsed structured objects and validates user configured telemetry ranges.
 
 ### Anomaly Detector
 Logs unusual data points based on user selected ranges.
 
 ### Report Generator
 Structured and human readable logs including processing summary, invalid records, anomalies and statistics.
+
+### Configuration
+Configuration files to configure Validator and Anomaly ranges.
 
 ## 4. Class Design
 Link to UML Diagram

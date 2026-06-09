@@ -18,30 +18,69 @@ bool TelemetryValidator::validateTimestamp() {
   std::tm tm{};
   std::istringstream ss(data.getTimestamp());
 
-  ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+  ss >> std::get_time(&tm, TIMESTAMP);
 
   return !ss.fail() && ss.eof();
 };
 
 bool TelemetryValidator::validateLatitude() {
-  return data.getLatitude() < 90.0 or data.getLatitude() > -90.0;
+  return data.getLatitude() >= MIN_LATITUDE and
+         data.getLatitude() <= MAX_LATITUDE;
 };
 
 bool TelemetryValidator::validateLongitude() {
-  return data.getLongitude() < 180.0 or data.getLongitude() > -180.0;
+  return data.getLongitude() >= MIN_LONGITUDE and
+         data.getLongitude() <= MAX_LONGITUDE;
 };
 
-bool TelemetryValidator::validateImu_acc_x() { return true; };
-bool TelemetryValidator::validateImu_acc_y() { return true; };
-bool TelemetryValidator::validateImu_acc_z() { return true; };
-bool TelemetryValidator::validateImu_gyro_x() { return true; };
-bool TelemetryValidator::validateImu_gyro_y() { return true; };
-bool TelemetryValidator::validateImu_gyro_z() { return true; };
-bool TelemetryValidator::validateLidar_distance() { return true; };
-bool TelemetryValidator::validateSpeed() { return true; };
-bool TelemetryValidator::validateWind_speed() { return true; };
-bool TelemetryValidator::validateBattery_level() { return true; };
-bool TelemetryValidator::validateObstacle_detected() { return true; };
+bool TelemetryValidator::validateImu_acc_x() {
+  return data.getImu_acc_x() >= MIN_IMU_ACC_X and
+         data.getImu_acc_x() <= MAX_IMU_ACC_X;
+};
+
+bool TelemetryValidator::validateImu_acc_y() {
+  return data.getImu_acc_y() >= MIN_IMU_ACC_Y and
+         data.getImu_acc_y() <= MAX_IMU_ACC_Y;
+};
+
+bool TelemetryValidator::validateImu_acc_z() {
+  return data.getImu_acc_z() >= MIN_IMU_ACC_Z and
+         data.getImu_acc_z() <= MAX_IMU_ACC_Z;
+};
+
+bool TelemetryValidator::validateImu_gyro_x() {
+  return data.getImu_gyro_x() >= MIN_IMU_GYRO_X and
+         data.getImu_gyro_x() <= MAX_IMU_GYRO_X;
+};
+
+bool TelemetryValidator::validateImu_gyro_y() {
+  return data.getImu_gyro_y() >= MIN_IMU_GYRO_Y and
+         data.getImu_gyro_y() <= MAX_IMU_GYRO_Y;
+};
+
+bool TelemetryValidator::validateImu_gyro_z() {
+  return data.getImu_gyro_z() >= MIN_IMU_GYRO_Z and
+         data.getImu_gyro_z() <= MAX_IMU_GYRO_Z;
+};
+
+bool TelemetryValidator::validateLidar_distance() {
+  return data.getLidar_distance() >= MIN_LIDAR_DISTANCE and
+         data.getLidar_distance() <= MAX_LIDAR_DISTANCE;
+};
+
+bool TelemetryValidator::validateSpeed() {
+  return data.getSpeed() >= MIN_SPEED and data.getSpeed() <= MAX_SPEED;
+};
+
+bool TelemetryValidator::validateWind_speed() {
+  return data.getWind_speed() >= MIN_WIND_SPEED and
+         data.getWind_speed() <= MAX_WIND_SPEED;
+};
+
+bool TelemetryValidator::validateBattery_level() {
+  return data.getBattery_level() <= MAX_BATTERY and
+         data.getBattery_level() >= MIN_BATTERY;
+};
 
 bool TelemetryValidator::validate() {
   bool result = true;
@@ -59,7 +98,6 @@ bool TelemetryValidator::validate() {
   result = result && validateSpeed();
   result = result && validateWind_speed();
   result = result && validateBattery_level();
-  result = result && validateObstacle_detected();
 
   return result;
 };
