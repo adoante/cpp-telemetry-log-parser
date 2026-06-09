@@ -1,17 +1,16 @@
 #pragma once
 
-#ifndef TELEMETRY_VALIDATOR_H
+#ifndef TELEMETRY_ANOMALY_H
 
-#define TELEMETRY_VALIDATOR_H
+#define TELEMETRY_ANOMALY_H
 
 #include "TelemetryData.h"
 
-class TelemetryValidator {
+class TelemetryAnomaly {
 private:
   TelemetryData data;
 
-  // Valid Ranges are dependent on UAV
-  // Configure ranges in configuration file
+  // Configure ranges in configuration
 
   // std::get_time requires const char*
   const char *TIMESTAMP = "%Y-%m-%d %H:%M:%S";
@@ -52,27 +51,27 @@ private:
   double MAX_BATTERY = 100.0;
   double MIN_BATTERY = 0.0;
 
-  bool validateTimestamp();
-  bool validateLatitude();
-  bool validateLongitude();
-  bool validateImu_acc_x();
-  bool validateImu_acc_y();
-  bool validateImu_acc_z();
-  bool validateImu_gyro_x();
-  bool validateImu_gyro_y();
-  bool validateImu_gyro_z();
-  bool validateLidar_distance();
-  bool validateSpeed();
-  bool validateWind_speed();
-  bool validateBattery_level();
+  bool anomalyTimestamp();
+  bool anomalyLatitude();
+  bool anomalyLongitude();
+  bool anomalyImu_acc_x();
+  bool anomalyImu_acc_y();
+  bool anomalyImu_acc_z();
+  bool anomalyImu_gyro_x();
+  bool anomalyImu_gyro_y();
+  bool anomalyImu_gyro_z();
+  bool anomalyLidar_distance();
+  bool anomalySpeed();
+  bool anomalyWind_speed();
+  bool anomalyBattery_level();
 
 public:
-  TelemetryValidator();
-  TelemetryValidator(TelemetryData data);
+  TelemetryAnomaly();
+  TelemetryAnomaly(TelemetryData data);
 
   void setTelemetryData(TelemetryData data);
   TelemetryData getTelemetryData() const;
-  bool validate();
+  bool anomaly();
 };
 
-#endif // TELEMETRY_VALIDATOR_H
+#endif // TELEMETRY_ANOMALY_H

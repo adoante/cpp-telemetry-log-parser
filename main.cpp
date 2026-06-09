@@ -1,3 +1,4 @@
+#include "TelemetryAnomaly.h"
 #include "TelemetryData.h"
 #include "TelemetryParser.h"
 #include "TelemetryValidator.h"
@@ -14,13 +15,13 @@ int main() {
 
   std::vector<TelemetryData> data = file.readData();
 
-  for (TelemetryData td : data) {
-    std::cout << td << "\n";
-  }
-
   TelemetryValidator val = TelemetryValidator(data[0]);
 
   std::cout << val.validate() << "\n";
+
+  TelemetryAnomaly anom = TelemetryAnomaly(data[1]);
+
+  std::cout << anom.anomaly() << "\n";
 
   return 0;
 }
