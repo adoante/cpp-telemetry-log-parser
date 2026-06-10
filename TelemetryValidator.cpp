@@ -1,11 +1,52 @@
 #include "TelemetryValidator.h"
+#include "ConfigParser.h"
 #include <iomanip>
 #include <sstream>
+#include <unordered_map>
 
 TelemetryValidator::TelemetryValidator() {};
 
-TelemetryValidator::TelemetryValidator(TelemetryData data) {
+TelemetryValidator::TelemetryValidator(
+    TelemetryData data, std::unordered_map<std::string, ConfigType> config) {
   this->data = data;
+
+  TIMESTAMP = std::get<std::string>(config.at("TIMESTAMP"));
+
+  MAX_LATITUDE = std::get<double>(config.at("MAX_LATITUDE"));
+  MIN_LATITUDE = std::get<double>(config.at("MIN_LATITUDE"));
+
+  MAX_LONGITUDE = std::get<double>(config.at("MAX_LONGITUDE"));
+  MIN_LONGITUDE = std::get<double>(config.at("MIN_LONGITUDE"));
+
+  MAX_IMU_ACC_X = std::get<double>(config.at("MAX_IMU_ACC_X"));
+  MIN_IMU_ACC_X = std::get<double>(config.at("MIN_IMU_ACC_X"));
+
+  MAX_IMU_ACC_Y = std::get<double>(config.at("MAX_IMU_ACC_Y"));
+  MIN_IMU_ACC_Y = std::get<double>(config.at("MIN_IMU_ACC_Y"));
+
+  MAX_IMU_ACC_Z = std::get<double>(config.at("MAX_IMU_ACC_Z"));
+  MIN_IMU_ACC_Z = std::get<double>(config.at("MIN_IMU_ACC_Z"));
+
+  MAX_IMU_GYRO_X = std::get<double>(config.at("MAX_IMU_GYRO_X"));
+  MIN_IMU_GYRO_X = std::get<double>(config.at("MIN_IMU_GYRO_X"));
+
+  MAX_IMU_GYRO_Y = std::get<double>(config.at("MAX_IMU_GYRO_Y"));
+  MIN_IMU_GYRO_Y = std::get<double>(config.at("MIN_IMU_GYRO_Y"));
+
+  MAX_IMU_GYRO_Z = std::get<double>(config.at("MAX_IMU_GYRO_Z"));
+  MIN_IMU_GYRO_Z = std::get<double>(config.at("MIN_IMU_GYRO_Z"));
+
+  MAX_LIDAR_DISTANCE = std::get<double>(config.at("MAX_LIDAR_DISTANCE"));
+  MIN_LIDAR_DISTANCE = std::get<double>(config.at("MIN_LIDAR_DISTANCE"));
+
+  MAX_SPEED = std::get<double>(config.at("MAX_SPEED"));
+  MIN_SPEED = std::get<double>(config.at("MIN_SPEED"));
+
+  MAX_WIND_SPEED = std::get<double>(config.at("MAX_WIND_SPEED"));
+  MIN_WIND_SPEED = std::get<double>(config.at("MIN_WIND_SPEED"));
+
+  MAX_BATTERY = std::get<double>(config.at("MAX_BATTERY"));
+  MIN_BATTERY = std::get<double>(config.at("MIN_BATTERY"));
 };
 
 void TelemetryValidator::setTelemetryData(TelemetryData data) {
@@ -18,7 +59,7 @@ bool TelemetryValidator::validateTimestamp() {
   std::tm tm{};
   std::istringstream ss(data.getTimestamp());
 
-  ss >> std::get_time(&tm, TIMESTAMP);
+  ss >> std::get_time(&tm, TIMESTAMP.c_str());
 
   return !ss.fail() && ss.eof();
 };

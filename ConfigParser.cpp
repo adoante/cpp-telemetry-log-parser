@@ -15,9 +15,9 @@ std::string ConfigParser::removeSpace(std::string s) {
     }
   }
 
-  for (int i = s.size(); i > s.size(); i--) {
+  for (int i = s.size() - 1; i >= 0; i--) {
     if (s[i] != ' ') {
-      s = s.substr(0, i);
+      s = s.substr(0, i + 1);
       break;
     }
   }

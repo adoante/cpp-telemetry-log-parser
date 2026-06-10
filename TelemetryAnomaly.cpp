@@ -1,10 +1,56 @@
 #include "TelemetryAnomaly.h"
+#include "ConfigParser.h"
 #include <iomanip>
 #include <sstream>
+#include <unordered_map>
 
 TelemetryAnomaly::TelemetryAnomaly() {};
 
-TelemetryAnomaly::TelemetryAnomaly(TelemetryData data) { this->data = data; };
+TelemetryAnomaly::TelemetryAnomaly(
+    TelemetryData data, std::unordered_map<std::string, ConfigType> config) {
+  this->data = data;
+
+  TIMESTAMP = std::get<std::string>(config.at("TIMESTAMP"));
+
+  MAX_TIMESTAMP = std::get<std::string>(config.at("MAX_TIMESTAMP"));
+  MIN_TIMESTAMP = std::get<std::string>(config.at("MIN_TIMESTAMP"));
+
+  MAX_LATITUDE = std::get<double>(config.at("MAX_LATITUDE"));
+  MIN_LATITUDE = std::get<double>(config.at("MIN_LATITUDE"));
+
+  MAX_LONGITUDE = std::get<double>(config.at("MAX_LONGITUDE"));
+  MIN_LONGITUDE = std::get<double>(config.at("MIN_LONGITUDE"));
+
+  MAX_IMU_ACC_X = std::get<double>(config.at("MAX_IMU_ACC_X"));
+  MIN_IMU_ACC_X = std::get<double>(config.at("MIN_IMU_ACC_X"));
+
+  MAX_IMU_ACC_Y = std::get<double>(config.at("MAX_IMU_ACC_Y"));
+  MIN_IMU_ACC_Y = std::get<double>(config.at("MIN_IMU_ACC_Y"));
+
+  MAX_IMU_ACC_Z = std::get<double>(config.at("MAX_IMU_ACC_Z"));
+  MIN_IMU_ACC_Z = std::get<double>(config.at("MIN_IMU_ACC_Z"));
+
+  MAX_IMU_GYRO_X = std::get<double>(config.at("MAX_IMU_GYRO_X"));
+  MIN_IMU_GYRO_X = std::get<double>(config.at("MIN_IMU_GYRO_X"));
+
+  MAX_IMU_GYRO_Y = std::get<double>(config.at("MAX_IMU_GYRO_Y"));
+  MIN_IMU_GYRO_Y = std::get<double>(config.at("MIN_IMU_GYRO_Y"));
+
+  MAX_IMU_GYRO_Z = std::get<double>(config.at("MAX_IMU_GYRO_Z"));
+  MIN_IMU_GYRO_Z = std::get<double>(config.at("MIN_IMU_GYRO_Z"));
+
+  MAX_LIDAR_DISTANCE = std::get<double>(config.at("MAX_LIDAR_DISTANCE"));
+  MIN_LIDAR_DISTANCE = std::get<double>(config.at("MIN_LIDAR_DISTANCE"));
+
+  MAX_SPEED = std::get<double>(config.at("MAX_SPEED"));
+  MIN_SPEED = std::get<double>(config.at("MIN_SPEED"));
+
+  MAX_WIND_SPEED = std::get<double>(config.at("MAX_WIND_SPEED"));
+  MIN_WIND_SPEED = std::get<double>(config.at("MIN_WIND_SPEED"));
+
+  MAX_BATTERY = std::get<double>(config.at("MAX_BATTERY"));
+  MIN_BATTERY = std::get<double>(config.at("MIN_BATTERY"));
+};
 
 void TelemetryAnomaly::setTelemetryData(TelemetryData data) {
   this->data = data;
@@ -13,14 +59,22 @@ void TelemetryAnomaly::setTelemetryData(TelemetryData data) {
 TelemetryData TelemetryAnomaly::getTelemetryData() const { return data; };
 
 bool TelemetryAnomaly::anomalyTimestamp() {
-  return true;
+  std::tm data_tm{};
+  std::tm min_tm{};
+  std::tm max_tm{};
 
-  std::tm tm{};
-  std::istringstream ss(data.getTimestamp());
+  std::istringstream(data.getTimestamp()) >>
+      std::get_time(&data_tm, TIMESTAMP.c_str());
+  std::istringstream(TIMESTAMP) >>
+      std::get_time(&min_tm, MIN_TIMESTAMP.c_str());
+  std::istringstream(TIMESTAMP) >>
+      std::get_time(&max_tm, MAX_TIMESTAMP.c_str());
 
-  ss >> std::get_time(&tm, MAX_TIMESTAMP);
+  std::time_t data_time = std::mktime(&data_tm);
+  std::time_t min_time = std::mktime(&min_tm);
+  std::time_t max_time = std::mktime(&max_tm);
 
-  return !ss.fail() && ss.eof();
+  return data_time < min_time || data_time > max_time;
 };
 
 bool TelemetryAnomaly::anomalyLatitude() {
