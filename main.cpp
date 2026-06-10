@@ -1,27 +1,23 @@
-#include "TelemetryAnomaly.h"
-#include "TelemetryData.h"
-#include "TelemetryParser.h"
-#include "TelemetryValidator.h"
+#include "ConfigParser.h"
+
+#include <filesystem>
 #include <iostream>
-#include <vector>
+#include <string>
+#include <unordered_map>
 
 int main() {
 
-  std::filesystem::path path = "./uav_navigation_dataset.csv";
+  std::filesystem::path configFile = "./anomaly.config";
+  std::unordered_map<std::string, ConfigType> config =
+      ConfigParser::parseConfig(configFile);
 
-  TelemetryParser file(path);
+  for (auto i : config) {
+    std::cout << i.first << ": ";
 
-  std::cout << file.getFilename() << "\n";
+    std::visit([](const auto &value) { std::cout << value; }, i.second);
 
-  std::vector<TelemetryData> data = file.readData();
-
-  TelemetryValidator val = TelemetryValidator(data[0]);
-
-  std::cout << val.validate() << "\n";
-
-  TelemetryAnomaly anom = TelemetryAnomaly(data[1]);
-
-  std::cout << anom.anomaly() << "\n";
+    std::cout << "\n";
+  }
 
   return 0;
 }

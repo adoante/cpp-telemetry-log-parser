@@ -13,10 +13,12 @@ void TelemetryAnomaly::setTelemetryData(TelemetryData data) {
 TelemetryData TelemetryAnomaly::getTelemetryData() const { return data; };
 
 bool TelemetryAnomaly::anomalyTimestamp() {
+  return true;
+
   std::tm tm{};
   std::istringstream ss(data.getTimestamp());
 
-  ss >> std::get_time(&tm, TIMESTAMP);
+  ss >> std::get_time(&tm, MAX_TIMESTAMP);
 
   return !ss.fail() && ss.eof();
 };
