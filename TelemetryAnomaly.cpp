@@ -1,9 +1,7 @@
 #include "TelemetryAnomaly.h"
 #include "ConfigParser.h"
 #include "TelemetryLogger.h"
-
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 #include <unordered_map>
 
@@ -85,7 +83,7 @@ bool TelemetryAnomaly::anomalyTimestamp() {
   if (!result) {
     std::string msg = "Anomaly Detected: TIMESTAMP out of range. TIMESTAMP: " +
                       data.getTimestamp();
-    anomalyLogger.log(LogLevel::WARNING, msg, true);
+    anomalyLogger.log(LogLevel::WARNING, msg, false);
   }
 
   return result;

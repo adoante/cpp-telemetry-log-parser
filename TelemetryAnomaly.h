@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <vector>
+
 #ifndef TELEMETRY_ANOMALY_H
 
 #define TELEMETRY_ANOMALY_H
