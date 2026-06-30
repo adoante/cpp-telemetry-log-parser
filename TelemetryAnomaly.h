@@ -1,9 +1,12 @@
 #pragma once
 
+#include <unordered_map>
+#include <vector>
 #ifndef TELEMETRY_ANOMALY_H
 
 #define TELEMETRY_ANOMALY_H
 
+#include "ConfigParser.h"
 #include "TelemetryData.h"
 
 class TelemetryAnomaly {
@@ -12,9 +15,10 @@ private:
 
   // Configure ranges in configuration
 
-  // std::get_time requires const char*
-  const char *MAX_TIMESTAMP;
-  const char *MIN_TIMESTAMP;
+  std::string TIMESTAMP;
+
+  std::string MAX_TIMESTAMP;
+  std::string MIN_TIMESTAMP;
 
   double MAX_LATITUDE;
   double MIN_LATITUDE;
@@ -68,7 +72,8 @@ private:
 
 public:
   TelemetryAnomaly();
-  TelemetryAnomaly(TelemetryData data);
+  TelemetryAnomaly(TelemetryData data,
+                   std::unordered_map<std::string, ConfigType>);
 
   void setTelemetryData(TelemetryData data);
   TelemetryData getTelemetryData() const;

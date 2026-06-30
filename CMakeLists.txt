@@ -10,4 +10,5 @@ add_executable(
     TelemetryValidator.cpp
     TelemetryAnomaly.cpp
     ConfigParser.cpp
+    TelemetryLogger.cpp
 )

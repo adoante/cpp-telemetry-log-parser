@@ -60,3 +60,9 @@ std::ostream &operator<<(std::ostream &out, TelemetryData const &data) {
 
   return out;
 }
+
+std::string TelemetryData::to_string() const {
+  std::ostringstream oss;
+  oss << *this;
+  return oss.str();
+}

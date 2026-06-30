@@ -1,4 +1,9 @@
 #include "ConfigParser.h"
+#include "TelemetryAnomaly.h"
+#include "TelemetryData.h"
+#include "TelemetryLogger.h"
+#include "TelemetryParser.h"
+#include "TelemetryValidator.h"
 
 #include <filesystem>
 #include <iostream>
@@ -6,17 +11,63 @@
 #include <unordered_map>
 
 int main() {
+  // Logger
+  std::filesystem::path logFile = "./MainLog.txt";
+  TelemetryLogger logger = TelemetryLogger(logFile);
 
-  std::filesystem::path configFile = "./anomaly.config";
-  std::unordered_map<std::string, ConfigType> config =
-      ConfigParser::parseConfig(configFile);
+  // Parse UAV Data
+  std::filesystem::path path = "./uav_navigation_dataset.csv";
+  TelemetryParser file(path);
 
-  for (auto i : config) {
-    std::cout << i.first << ": ";
+  std::string msg = "Parsing '" + file.getFilename() + "'";
+  logger.log(LogLevel::INFO, msg, true);
 
-    std::visit([](const auto &value) { std::cout << value; }, i.second);
+  std::vector<TelemetryData> data = file.readData();
 
-    std::cout << "\n";
+  // Read Validator Config file
+  std::filesystem::path valConfigFile = "./validator.config";
+
+  std::unordered_map<std::string, ConfigType> valConfig =
+      ConfigParser::parseConfig(valConfigFile);
+
+  msg = "Configuring Validator using config file: '" + valConfigFile.string() +
+        "'";
+  logger.log(LogLevel::INFO, msg, true);
+
+  // Validate UAV data
+  TelemetryValidator val = TelemetryValidator(data[0], valConfig);
+
+  if (val.validate()) {
+    logger.log(LogLevel::INFO, "Validation Successful. Valid UAV data.", true);
+  } else {
+    logger.log(LogLevel::ERROR, "Validation Failed. Invalid UAV data.", true);
+  }
+
+  // Read Anomaly Config file
+  std::filesystem::path anomConfigFile = "./anomaly.config";
+
+  std::unordered_map<std::string, ConfigType> anomConfig =
+      ConfigParser::parseConfig(anomConfigFile);
+
+  msg = "Configuring Anomaly Detector using config file: '" +
+        anomConfigFile.string() + "'";
+  logger.log(LogLevel::INFO, msg, true);
+
+  // Detect anomalies in UAV data
+  bool result = true;
+
+  std::cout << "data size = " << data.size() << '\n';
+
+  for (const auto &anomaly : data) {
+    TelemetryAnomaly anom(anomaly, anomConfig);
+
+    result = result &= anom.anomaly();
+  }
+
+  if (result) {
+    logger.log(LogLevel::INFO, "No anomalies detected.", true);
+  } else {
+    logger.log(LogLevel::INFO, "Anomalies detected.", true);
   }
 
   return 0;

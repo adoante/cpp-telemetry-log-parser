@@ -50,6 +50,8 @@ public:
   bool getObstacle_detected() const;
 
   friend std::ostream &operator<<(std::ostream &out, TelemetryData const &data);
+
+  std::string to_string() const;
 };
 
 #endif // TELEMETRY_DATA_H

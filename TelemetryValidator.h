@@ -1,9 +1,12 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
 #ifndef TELEMETRY_VALIDATOR_H
 
 #define TELEMETRY_VALIDATOR_H
 
+#include "ConfigParser.h"
 #include "TelemetryData.h"
 
 class TelemetryValidator {
@@ -13,8 +16,7 @@ private:
   // Valid Ranges are dependent on UAV
   // Configure ranges in configuration file
 
-  // std::get_time requires const char*
-  const char *TIMESTAMP;
+  std::string TIMESTAMP;
 
   double MAX_LATITUDE;
   double MIN_LATITUDE;
@@ -68,7 +70,8 @@ private:
 
 public:
   TelemetryValidator();
-  TelemetryValidator(TelemetryData data);
+  TelemetryValidator(TelemetryData data,
+                     std::unordered_map<std::string, ConfigType>);
 
   void setTelemetryData(TelemetryData data);
   TelemetryData getTelemetryData() const;

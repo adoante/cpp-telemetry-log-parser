@@ -25,6 +25,9 @@ Structured and human readable logs including processing summary, invalid records
 ### Configuration
 Configuration files to configure Validator and Anomaly ranges.
 
+### Logger
+Log errors, warnings and progress information to console and log file.
+
 ## 4. Class Design
 Link to UML Diagram
 

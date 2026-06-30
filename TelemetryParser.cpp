@@ -1,7 +1,13 @@
 #include "TelemetryParser.h"
+#include "TelemetryData.h"
+#include "TelemetryLogger.h"
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string>
+
+std::filesystem::path parserLogFile = "./ParserLog.txt";
+TelemetryLogger parserLogger = TelemetryLogger(parserLogFile);
 
 TelemetryParser::TelemetryParser() {}
 
@@ -33,6 +39,10 @@ std::vector<TelemetryData> TelemetryParser::readData() {
           std::stod(temp[7]), std::stod(temp[8]), std::stod(temp[9]),
           std::stod(temp[10]), std::stod(temp[11]), std::stod(temp[12]),
           std::stod(temp[13]), temp[14] == "1");
+
+      parserLogger.log(LogLevel::INFO,
+                       "Parsed data point: [" + td.to_string() + "]\n", false);
+
       data.push_back(td);
     }
 
@@ -40,6 +50,10 @@ std::vector<TelemetryData> TelemetryParser::readData() {
     headerSkip = true;
   }
 
+  parserLogger.log(LogLevel::INFO,
+                   "Parsed file '" + getFilename() + "' with " +
+                       std::to_string(data.size()) + " data points.\n",
+                   false);
   return data;
 }
 
