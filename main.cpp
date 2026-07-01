@@ -6,7 +6,6 @@
 #include "TelemetryValidator.h"
 
 #include <filesystem>
-#include <iostream>
 #include <string>
 #include <unordered_map>
 
@@ -35,9 +34,15 @@ int main() {
   logger.log(LogLevel::INFO, msg, true);
 
   // Validate UAV data
-  TelemetryValidator val = TelemetryValidator(data[0], valConfig);
+  bool valResult = true;
 
-  if (val.validate()) {
+  for (const auto &validate : data) {
+
+    TelemetryValidator val = TelemetryValidator(validate, valConfig);
+    valResult = valResult &= val.validate();
+  }
+
+  if (valResult) {
     logger.log(LogLevel::INFO, "Validation Successful. Valid UAV data.", true);
   } else {
     logger.log(LogLevel::ERROR, "Validation Failed. Invalid UAV data.", true);
@@ -55,8 +60,6 @@ int main() {
 
   // Detect anomalies in UAV data
   bool result = true;
-
-  std::cout << "data size = " << data.size() << '\n';
 
   for (const auto &anomaly : data) {
     TelemetryAnomaly anom(anomaly, anomConfig);

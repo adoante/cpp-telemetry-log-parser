@@ -1,8 +1,13 @@
 #include "TelemetryValidator.h"
 #include "ConfigParser.h"
+#include "TelemetryLogger.h"
+
 #include <iomanip>
 #include <sstream>
 #include <unordered_map>
+
+std::filesystem::path valLogFile = "./validatorLogs.txt";
+TelemetryLogger validatorLogger = TelemetryLogger(valLogFile);
 
 TelemetryValidator::TelemetryValidator() {};
 
@@ -61,7 +66,15 @@ bool TelemetryValidator::validateTimestamp() {
 
   ss >> std::get_time(&tm, TIMESTAMP.c_str());
 
-  return !ss.fail() && ss.eof();
+  bool result = !ss.fail() && ss.eof();
+
+  if (!result) {
+    std::string msg = "Invalid data: TIMESTAMP format incorrect. TIMESTAMP: " +
+                      data.getTimestamp();
+    validatorLogger.log(LogLevel::ERROR, msg, true);
+  }
+
+  return result;
 };
 
 bool TelemetryValidator::validateLatitude() {
@@ -126,19 +139,19 @@ bool TelemetryValidator::validateBattery_level() {
 bool TelemetryValidator::validate() {
   bool result = true;
 
-  result = result && validateTimestamp();
-  result = result && validateLatitude();
-  result = result && validateLongitude();
-  result = result && validateImu_acc_x();
-  result = result && validateImu_acc_y();
-  result = result && validateImu_acc_z();
-  result = result && validateImu_gyro_x();
-  result = result && validateImu_gyro_y();
-  result = result && validateImu_gyro_z();
-  result = result && validateLidar_distance();
-  result = result && validateSpeed();
-  result = result && validateWind_speed();
-  result = result && validateBattery_level();
+  result = result &= validateTimestamp();
+  result = result &= validateLatitude();
+  result = result &= validateLongitude();
+  result = result &= validateImu_acc_x();
+  result = result &= validateImu_acc_y();
+  result = result &= validateImu_acc_z();
+  result = result &= validateImu_gyro_x();
+  result = result &= validateImu_gyro_y();
+  result = result &= validateImu_gyro_z();
+  result = result &= validateLidar_distance();
+  result = result &= validateSpeed();
+  result = result &= validateWind_speed();
+  result = result &= validateBattery_level();
 
   return result;
 };
