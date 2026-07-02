@@ -78,63 +78,181 @@ bool TelemetryValidator::validateTimestamp() {
 };
 
 bool TelemetryValidator::validateLatitude() {
-  return data.getLatitude() >= MIN_LATITUDE and
-         data.getLatitude() <= MAX_LATITUDE;
-};
+  bool result =
+      data.getLatitude() >= MIN_LATITUDE && data.getLatitude() <= MAX_LATITUDE;
+
+  if (!result) {
+    validatorLogger.log(LogLevel::ERROR,
+                        "Validation Failed: LATITUDE out of range. LATITUDE: " +
+                            std::to_string(data.getLatitude()),
+                        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateLongitude() {
-  return data.getLongitude() >= MIN_LONGITUDE and
-         data.getLongitude() <= MAX_LONGITUDE;
-};
+  bool result = data.getLongitude() >= MIN_LONGITUDE &&
+                data.getLongitude() <= MAX_LONGITUDE;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: LONGITUDE out of range. LONGITUDE: " +
+            std::to_string(data.getLongitude()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_acc_x() {
-  return data.getImu_acc_x() >= MIN_IMU_ACC_X and
-         data.getImu_acc_x() <= MAX_IMU_ACC_X;
-};
+  bool result = data.getImu_acc_x() >= MIN_IMU_ACC_X &&
+                data.getImu_acc_x() <= MAX_IMU_ACC_X;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_ACC_X out of range. IMU_ACC_X: " +
+            std::to_string(data.getImu_acc_x()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_acc_y() {
-  return data.getImu_acc_y() >= MIN_IMU_ACC_Y and
-         data.getImu_acc_y() <= MAX_IMU_ACC_Y;
-};
+  bool result = data.getImu_acc_y() >= MIN_IMU_ACC_Y &&
+                data.getImu_acc_y() <= MAX_IMU_ACC_Y;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_ACC_Y out of range. IMU_ACC_Y: " +
+            std::to_string(data.getImu_acc_y()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_acc_z() {
-  return data.getImu_acc_z() >= MIN_IMU_ACC_Z and
-         data.getImu_acc_z() <= MAX_IMU_ACC_Z;
-};
+  bool result = data.getImu_acc_z() >= MIN_IMU_ACC_Z &&
+                data.getImu_acc_z() <= MAX_IMU_ACC_Z;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_ACC_Z out of range. IMU_ACC_Z: " +
+            std::to_string(data.getImu_acc_z()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_gyro_x() {
-  return data.getImu_gyro_x() >= MIN_IMU_GYRO_X and
-         data.getImu_gyro_x() <= MAX_IMU_GYRO_X;
-};
+  bool result = data.getImu_gyro_x() >= MIN_IMU_GYRO_X &&
+                data.getImu_gyro_x() <= MAX_IMU_GYRO_X;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_GYRO_X out of range. IMU_GYRO_X: " +
+            std::to_string(data.getImu_gyro_x()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_gyro_y() {
-  return data.getImu_gyro_y() >= MIN_IMU_GYRO_Y and
-         data.getImu_gyro_y() <= MAX_IMU_GYRO_Y;
-};
+  bool result = data.getImu_gyro_y() >= MIN_IMU_GYRO_Y &&
+                data.getImu_gyro_y() <= MAX_IMU_GYRO_Y;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_GYRO_Y out of range. IMU_GYRO_Y: " +
+            std::to_string(data.getImu_gyro_y()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateImu_gyro_z() {
-  return data.getImu_gyro_z() >= MIN_IMU_GYRO_Z and
-         data.getImu_gyro_z() <= MAX_IMU_GYRO_Z;
-};
+  bool result = data.getImu_gyro_z() >= MIN_IMU_GYRO_Z &&
+                data.getImu_gyro_z() <= MAX_IMU_GYRO_Z;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: IMU_GYRO_Z out of range. IMU_GYRO_Z: " +
+            std::to_string(data.getImu_gyro_z()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateLidar_distance() {
-  return data.getLidar_distance() >= MIN_LIDAR_DISTANCE and
-         data.getLidar_distance() <= MAX_LIDAR_DISTANCE;
-};
+  bool result = data.getLidar_distance() >= MIN_LIDAR_DISTANCE &&
+                data.getLidar_distance() <= MAX_LIDAR_DISTANCE;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: LIDAR_DISTANCE out of range. LIDAR_DISTANCE: " +
+            std::to_string(data.getLidar_distance()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateSpeed() {
-  return data.getSpeed() >= MIN_SPEED and data.getSpeed() <= MAX_SPEED;
-};
+  bool result = data.getSpeed() >= MIN_SPEED && data.getSpeed() <= MAX_SPEED;
+
+  if (!result) {
+    validatorLogger.log(LogLevel::ERROR,
+                        "Validation Failed: SPEED out of range. SPEED: " +
+                            std::to_string(data.getSpeed()),
+                        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateWind_speed() {
-  return data.getWind_speed() >= MIN_WIND_SPEED and
-         data.getWind_speed() <= MAX_WIND_SPEED;
-};
+  bool result = data.getWind_speed() >= MIN_WIND_SPEED &&
+                data.getWind_speed() <= MAX_WIND_SPEED;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: WIND_SPEED out of range. WIND_SPEED: " +
+            std::to_string(data.getWind_speed()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validateBattery_level() {
-  return data.getBattery_level() <= MAX_BATTERY and
-         data.getBattery_level() >= MIN_BATTERY;
-};
+  bool result = data.getBattery_level() >= MIN_BATTERY &&
+                data.getBattery_level() <= MAX_BATTERY;
+
+  if (!result) {
+    validatorLogger.log(
+        LogLevel::ERROR,
+        "Validation Failed: BATTERY_LEVEL out of range. BATTERY_LEVEL: " +
+            std::to_string(data.getBattery_level()),
+        true);
+  }
+
+  return result;
+}
 
 bool TelemetryValidator::validate() {
   bool result = true;
