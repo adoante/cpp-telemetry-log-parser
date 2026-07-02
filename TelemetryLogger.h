@@ -13,6 +13,7 @@ enum LogLevel { INFO, WARNING, ERROR };
 class TelemetryLogger {
 private:
   std::ofstream ofs;
+  std::string getLogLevelName(LogLevel level);
 
 public:
   TelemetryLogger(std::filesystem::path file);
