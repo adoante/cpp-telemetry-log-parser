@@ -38,7 +38,8 @@ Simple CSV columns.
 Log errors to console and include in report.
 
 ## 7. Testing
-Unit tests for parser, validator, anomaly detection.
+Unit tests for parser, validator, anomaly detection using CMake CTest
 
 ## 8. Future Improvements
 - Support multiple file types
+- Auto generate Telemetry(Anomaly, Data, Validator, Parser?)
