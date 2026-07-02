@@ -13,6 +13,9 @@ TelemetryLogger configParserLogger = TelemetryLogger(file);
 ConfigParser::ConfigParser() {};
 
 std::string ConfigParser::removeSpace(std::string s) {
+  configParserLogger.log(LogLevel::INFO,
+                         "Removing white space from: '" + s + "'", false);
+
   for (int i = 0; i < s.size(); i++) {
     if (s[i] != ' ') {
       s = s.substr(i);
@@ -26,6 +29,9 @@ std::string ConfigParser::removeSpace(std::string s) {
       break;
     }
   }
+
+  configParserLogger.log(LogLevel::INFO,
+                         "Removed white space from: '" + s + "'", false);
 
   return s;
 }
